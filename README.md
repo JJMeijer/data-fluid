@@ -77,8 +77,3 @@ fluid.set({
 > {platform: "amp"}
 ```
 
-## FYIs
-
-* When using the set method with arrays, the new array will be concatenated to the existing array.
-* Data inside events is **not** merged with the data object inside the datalayer.
-* For any serious use-cases the events part is almost always good enough. The `set` method & data object inside the datalayer are not really necessary.
