@@ -13,7 +13,7 @@ export interface FluidSubscribers {
 }
 
 export interface IDataFluidFactory {
-    create: (name: string) => DataFluid;
+    create: (name?: string) => DataFluid;
     getByName: (name: string) => DataFluid | null;
     getAll: () => Record<string, DataFluid>;
 }

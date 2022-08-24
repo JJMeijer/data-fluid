@@ -4,9 +4,11 @@ import { IDataFluidFactory } from "./types";
 const instances: Record<string, DataFluid> = {};
 
 export const DataFluidFactory: IDataFluidFactory = {
-    create: (name) => {
+    create: (name = undefined) => {
         const instance = new DataFluid();
-        instances[name] = instance;
+
+        const identifier = name ? name : `DataFluid-${Object.keys(instances).length + 1}`;
+        instances[identifier] = instance;
         return instance;
     },
     getByName: (name) => {

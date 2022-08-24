@@ -7,7 +7,7 @@ Basic DataLayer framework Prototype written in Typescript. Minified library can 
 Initialize datalayer.
 
 ```javascript
-window.fluid = DatafluidFactory.create("fluid");
+window.fluid = DatafluidFactory.create();
 > r {events: Array(0), subscribers: {…}}
 ```
 

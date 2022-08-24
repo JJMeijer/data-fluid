@@ -66,8 +66,10 @@
     var instances = {};
     var DataFluidFactory = {
         create: function (name) {
+            if (name === void 0) { name = undefined; }
             var instance = new DataFluid();
-            instances[name] = instance;
+            var identifier = name ? name : "DataFluid-".concat(Object.keys(instances).length + 1);
+            instances[identifier] = instance;
             return instance;
         },
         getByName: function (name) {
