@@ -1,29 +1,17 @@
 # Data Fluid
 
-Basic DataLayer framework Prototype written in Typescript.
-
-## Build
-
-Uses ESbuild to build for browser usage. Minified library will be placed inside `dist` folder. see [esbuild.js](esbuild.js) for settings.
-
-```bash
-yarn build
-```
-
----
+Basic DataLayer framework Prototype written in Typescript. Minified library can be found [dist](/dist) folder.
 
 ## Basic usage
 
 Initialize datalayer.
 
 ```javascript
-window.fluid = DataFluid();
-
-console.log(fluid)
-> {events: Array(0), data: {..},  set: f, on: f, once: f, trigger: f, ...}
+window.fluid = DatafluidFactory.create("fluid");
+> r {events: Array(0), subscribers: {…}}
 ```
 
-Add Event Listener
+Add Event Listener that runs on every iteration of the event.
 
 ```javascript
 fluid.on('click', function(data) {
@@ -31,7 +19,7 @@ fluid.on('click', function(data) {
 });
 ```
 
-Add Event Listener that will only run callback once.
+Add Event Listener that will only run callback on the first iteration of the event.
 
 ```javascript
 fluid.once('click', function(data) {
@@ -47,33 +35,3 @@ fluid.trigger('click', {
   buttonText: 'next'
 });
 ```
-
-Add Data to data object inside the datalayer.
-
-```javascript
-fluid.set({
-  page: {
-    platform: 'web',
-    domain: location.hostname,
-    path: location.pathname
-  }
-});
-```
-
-Set a listener on a key in the data object. The callback in the listener will run when the data element is changed. For example:
-
-```javascript
-// Set Listener
-fluid.on('page.platform', function(data) {console.log(data)});
-
-// Add new data
-fluid.set({
-  page: {
-    platform: 'amp'
-  }
-});
-
-// Listener will log:
-> {platform: "amp"}
-```
-

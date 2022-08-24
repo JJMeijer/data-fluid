@@ -1,69 +1,25 @@
-declare global {
-  interface Window {
-    DataFluid: () => FluidDatalayer;
-  }
-}
+import { DataFluid } from "./DataFluid";
 
-export interface FluidObject {
-  [key: string]: unknown;
-}
+export type FluidData = Record<string, string | number | boolean | { [key: string]: FluidData }>;
 
-export type FluidArray = Array<unknown>;
-
-export type JsTypes =
-  | 'boolean'
-  | 'string'
-  | 'number'
-  | 'array'
-  | 'object'
-  | 'null'
-  | 'undefined'
-  | 'symbol'
-  | 'math'
-  | 'error'
-  | 'set'
-  | 'function'
-  | 'date'
-  | 'regexp';
-
-export type Validation = {
-  [JsType in JsTypes]?: unknown;
-};
-
-export interface FluidEvent {
-  event: string;
-  data: FluidObject;
-}
+export type FluidEvent = [string, FluidData];
 
 export interface FluidCallback {
-  (data: FluidObject): void;
+    (data: FluidData): void;
 }
 
-export interface FluidTrigger {
-  (event: string, data: FluidObject, isEvent?: boolean): void;
+export interface FluidSubscribers {
+    [key: string]: FluidCallback[];
 }
 
-export interface FluidSet {
-  (newData: FluidObject): void;
+export interface IDataFluidFactory {
+    create: (name: string) => DataFluid;
+    getByName: (name: string) => DataFluid | null;
+    getAll: () => Record<string, DataFluid>;
 }
 
-export interface FluidOn {
-  (event: string, callback: FluidCallback): void;
-}
-
-export interface FluidListeners {
-  [key: string]: Array<FluidCallback>;
-}
-
-export interface FluidMerge {
-  (original: FluidObject, addition: FluidObject, trigger: FluidTrigger, ancestry?: string): FluidObject;
-}
-
-export interface FluidDatalayer {
-  events: Array<FluidEvent>;
-  data: FluidObject;
-  set: FluidSet;
-  on: FluidOn;
-  once: FluidOn;
-  trigger: FluidTrigger;
+declare global {
+    interface Window {
+        DataFluidFactory: IDataFluidFactory;
+    }
 }
