@@ -1,6 +1,6 @@
 # Data Fluid
 
-Basic DataLayer framework Prototype written in Typescript. Minified library can be found [dist](/dist) folder.
+Basic Analytics DataLayer prototype following the Eventbus pattern. Minified library can be found [dist](/dist) folder.
 
 ## Basic usage
 

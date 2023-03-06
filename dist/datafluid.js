@@ -31,29 +31,59 @@
             this.events = [];
             this.subscribers = {};
         }
-        DataFluid.prototype.on = function (eventName, callback) {
+        /**
+         * Subscribe to an event -> Execute a callback each time a certain event is
+         * triggered.
+         * @param eventName Name of the event to listen to.
+         * @param callback Callback that will be executed when the event occurs
+         * @param retroactive Setting to indicate if this callback should be called for events that happened in the past. Default = true
+         */
+        DataFluid.prototype.on = function (eventName, callback, retroactive) {
+            if (retroactive === void 0) { retroactive = true; }
             this.subscribers[eventName] = __spreadArray(__spreadArray([], (this.subscribers[eventName] || []), true), [callback], false);
-            this.events
-                .filter(function (event) { return event[0] === eventName; })
-                .forEach(function (event) {
-                callback(event[1]);
-            });
+            if (retroactive) {
+                this.events
+                    .filter(function (event) { return event[0] === eventName; })
+                    .forEach(function (event) {
+                    callback(event[1]);
+                });
+            }
         };
-        DataFluid.prototype.once = function (eventName, callback) {
+        /**
+         * Subscribe to an event once -> Execute a callback the first time a certain event is
+         * triggered.
+         * @param eventName Name of the event to subscribe to.
+         * @param callback Callback that will be executed when the event occurs
+         * @param retroactive Setting to indicate if this callback should be called for events that happened in the past. Default = true
+         */
+        DataFluid.prototype.once = function (eventName, callback, retroactive) {
             var _this = this;
-            var pastEvent = this.events.find(function (event) { return event[0] === eventName; });
-            if (pastEvent) {
-                callback(pastEvent[1]);
-                return;
+            if (retroactive === void 0) { retroactive = true; }
+            if (retroactive) {
+                var pastEvent = this.events.find(function (event) { return event[0] === eventName; });
+                if (pastEvent) {
+                    callback(pastEvent[1]);
+                    return;
+                }
             }
             this.subscribers[eventName] = __spreadArray(__spreadArray([], (this.subscribers[eventName] || []), true), [
                 callback,
                 function () { return _this.off(eventName, callback); },
             ], false);
         };
+        /**
+         * Remove subscriber callback for an event
+         * @param eventName Name of the event for which the subscriber callback should be removed
+         * @param callback Callback to remove
+         */
         DataFluid.prototype.off = function (eventName, callback) {
             this.subscribers[eventName] = (this.subscribers[eventName] || []).filter(function (x) { return x !== callback; });
         };
+        /**
+         * Publish an event to trigger all subscriber callbacks for that event.
+         * @param eventName Name of the event to publish
+         * @param eventData Data given to all subscriber callbacks
+         */
         DataFluid.prototype.trigger = function (eventName, eventData) {
             this.events.push([eventName, eventData]);
             (this.subscribers[eventName] || []).forEach(function (callback) {
