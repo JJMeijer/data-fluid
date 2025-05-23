@@ -17,9 +17,3 @@ export interface IDataFluidFactory {
     getByName: (name: string) => DataFluid | null;
     getAll: () => Record<string, DataFluid>;
 }
-
-declare global {
-    interface Window {
-        DataFluidFactory: IDataFluidFactory;
-    }
-}
